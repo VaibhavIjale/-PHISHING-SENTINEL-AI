@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIEM Security Monitoring | Cyber Sentinel AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" style="text-decoration: none; color: inherit;"><h1><i class="fas fa-shield-halved"></i> CYBER SENTINEL AI</h1></a>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/logout" style="color: var(--danger);"><i class="fas fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="hero">
+            <h2>SIEM Security Monitoring</h2>
+            <p>Unified security management for analyzing logs and system activity.</p>
+        </header>
+
+        <div class="grid">
+            <div class="info-box" style="grid-column: span 2;">
+                <h3><i class="fas fa-chart-area"></i> Login Activity Trends</h3>
+                <div id="login-chart" style="height: 300px;"></div>
+                <script>
+                    var trace1 = {
+                        x: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                        y: [12, 18, 45, 62, 38, 25],
+                        type: 'scatter',
+                        name: 'Successful Logins',
+                        line: {color: '#22c55e'}
+                    };
+                    var trace2 = {
+                        x: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                        y: [2, 5, 8, 12, 5, 3],
+                        type: 'scatter',
+                        name: 'Failed Attempts',
+                        line: {color: '#ef4444'}
+                    };
+                    var data = [trace1, trace2];
+                    var layout = {
+                        paper_bgcolor: 'rgba(0,0,0,0)',
+                        plot_bgcolor: 'rgba(0,0,0,0)',
+                        font: {color: '#94a3b8'},
+                        margin: {t: 20, b: 40, l: 40, r: 20}
+                    };
+                    Plotly.newPlot('login-chart', data, layout);
+                </script>
+            </div>
+
+            <div class="info-box">
+                <h3><i class="fas fa-server"></i> System Resources (LIVE)</h3>
+                <div class="feature-item">
+                    <span>CPU Usage</span>
+                    <div style="width: 60%; background: #334155; height: 10px; border-radius: 5px;">
+                        <div id="cpu-bar" style="width: {{ stats.cpu }}%; background: var(--primary); height: 100%; border-radius: 5px; transition: width 0.5s;"></div>
+                    </div>
+                    <strong id="cpu-val">{{ stats.cpu }}%</strong>
+                </div>
+                <div class="feature-item">
+                    <span>Memory Usage</span>
+                    <div style="width: 60%; background: #334155; height: 10px; border-radius: 5px;">
+                        <div id="mem-bar" style="width: {{ stats.memory }}%; background: var(--warning); height: 100%; border-radius: 5px; transition: width 0.5s;"></div>
+                    </div>
+                    <strong id="mem-val">{{ stats.memory }}%</strong>
+                </div>
+                <div class="feature-item">
+                    <span>Active Processes</span>
+                    <strong id="proc-val">{{ stats.processes }}</strong>
+                </div>
+            </div>
+
+            <script>
+                function updateStats() {
+                    fetch('/siem/stats')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('cpu-bar').style.width = data.cpu + '%';
+                            document.getElementById('cpu-val').innerText = data.cpu + '%';
+                            document.getElementById('mem-bar').style.width = data.memory + '%';
+                            document.getElementById('mem-val').innerText = data.memory + '%';
+                            document.getElementById('proc-val').innerText = data.processes;
+                        });
+                }
+                setInterval(updateStats, 3000);
+            </script>
+
+            <div class="info-box">
+                <h3><i class="fas fa-history"></i> Live System Events</h3>
+                <div class="feature-list" id="siem-events">
+                    <div class="feature-item">
+                        <span>Loading system events...</span>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function updateSiemEvents() {
+                    fetch('/siem/events')
+                        .then(response => response.json())
+                        .then(data => {
+                            const list = document.getElementById('siem-events');
+                            list.innerHTML = '';
+                            data.forEach(event => {
+                                const div = document.createElement('div');
+                                div.className = 'feature-item';
+                                div.innerHTML = `<span>${event}</span>`;
+                                list.appendChild(div);
+                            });
+                        });
+                }
+                setInterval(updateSiemEvents, 4000);
+                updateSiemEvents();
+            </script>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Cyber Sentinel AI | SIEM Dashboard
+    </footer>
+
+</body>
+</html>

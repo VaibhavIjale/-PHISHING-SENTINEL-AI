@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Center | Cyber Sentinel AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
+        }
+
+        .resource-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" style="text-decoration: none; color: inherit;"><h1><i class="fas fa-shield-halved"></i> CYBER SENTINEL AI</h1></a>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/logout" style="color: var(--danger);"><i class="fas fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="hero">
+            <h2>Cybersecurity Learning Center</h2>
+            <p>Essential tools and frameworks for modern security researchers and ethical hackers.</p>
+        </header>
+
+        <div class="resource-grid">
+            <!-- Kali Linux -->
+            <div class="resource-card">
+                <i class="fab fa-linux"></i>
+                <h3>Kali Linux</h3>
+                <p>The industry-standard Linux distribution for penetration testing and ethical hacking. It comes pre-loaded with hundreds of security tools.</p>
+                <div class="tool-tags">
+                    <span class="tag">OS</span>
+                    <span class="tag">PenTesting</span>
+                    <span class="tag">Debian-Based</span>
+                </div>
+            </div>
+
+            <!-- Wireshark -->
+            <div class="resource-card">
+                <i class="fas fa-network-wired"></i>
+                <h3>Wireshark</h3>
+                <p>The world's foremost network protocol analyzer. It lets you see what's happening on your network at a microscopic level.</p>
+                <div class="tool-tags">
+                    <span class="tag">Packet Sniffer</span>
+                    <span class="tag">Network Analysis</span>
+                    <span class="tag">Open Source</span>
+                </div>
+            </div>
+
+            <!-- Aircrack-ng -->
+            <div class="resource-card">
+                <i class="fas fa-wifi"></i>
+                <h3>Aircrack-ng</h3>
+                <p>A complete suite of tools to assess WiFi network security. It focuses on different areas of WiFi security: monitoring, attacking, testing, and cracking.</p>
+                <div class="tool-tags">
+                    <span class="tag">Wireless</span>
+                    <span class="tag">Security Audit</span>
+                    <span class="tag">WPA/WEP</span>
+                </div>
+            </div>
+
+            <!-- Scapy -->
+            <div class="resource-card">
+                <i class="fas fa-terminal"></i>
+                <h3>Scapy</h3>
+                <p>A powerful interactive packet manipulation program written in Python. It can forge or decode packets of a wide number of protocols.</p>
+                <div class="tool-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Packet Manipulation</span>
+                    <span class="tag">Fuzzing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Cyber Sentinel AI | Security Research Resources
+    </footer>
+
+</body>
+</html>

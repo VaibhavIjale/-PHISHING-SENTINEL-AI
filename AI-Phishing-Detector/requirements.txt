@@ -9,3 +9,8 @@ tldextract
 flask-sqlalchemy
 plotly
 python-dotenv
+scapy
+python-nmap
+watchdog
+psutil
+pymongo

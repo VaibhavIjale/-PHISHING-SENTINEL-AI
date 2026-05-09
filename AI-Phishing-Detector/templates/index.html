@@ -3,140 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Phishing Sentinel | URL Security Analyzer</title>
+    <title>Cyber Sentinel AI | Security Command Center</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.1);
+        }
+
+        .tool-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .tool-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .tool-card .badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .stats-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-item h4 {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item .value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <h1><i class="fas fa-shield-halved"></i> PHISHING SENTINEL AI</h1>
+        <h1><i class="fas fa-shield-halved"></i> CYBER SENTINEL AI</h1>
+        <div class="nav-links">
+            <a href="/future"><i class="fas fa-rocket"></i> Future Trends</a>
+            <a href="/logout" style="color: var(--danger);"><i class="fas fa-right-from-bracket"></i> Logout</a>
+        </div>
     </nav>
 
     <div class="container">
         <header class="hero">
-            <h2>Secure Your Digital Browsing</h2>
-            <p>Our advanced AI model analyzes URLs in real-time to detect phishing threats and malicious activity.</p>
+            <h2 style="background: linear-gradient(to right, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI-Based Intrusion Detection & Threat Monitoring System</h2>
+            <p>Industry-Level Cybersecurity Suite powered by Artificial Intelligence, Packet Sniffing, and Real-time Threat Analysis.</p>
         </header>
 
-        <section class="search-container">
-            <form action="/predict" method="POST" class="input-group">
-                <input type="text" name="url" placeholder="Paste URL here (e.g., https://google.com)" required value="{{ url if url else '' }}">
-                <button type="submit">ANALYZE URL</button>
-            </form>
-            <div style="text-align: center; margin-top: 1rem;">
-                <a href="/history" style="color: var(--primary); text-decoration: none; font-weight: bold;"><i class="fas fa-history"></i> View Full Scan History</a>
+        <div class="stats-banner">
+            <div class="stat-item">
+                <h4>Active Modules</h4>
+                <div class="value">5</div>
             </div>
-        </section>
-
-        {% if result %}
-        <div class="result-card {{ status_class }}">
-            <div class="result-header">
-                <div class="result-badge bg-{{ status_class }}">
-                    {{ result }}
-                </div>
-                <div class="confidence">
-                    AI Confidence: <strong>{{ confidence }}%</strong>
-                </div>
+            <div class="stat-item">
+                <h4>System Status</h4>
+                <div class="value" style="color: var(--success);">SECURE</div>
             </div>
-
-            <!-- Threat Gauge Chart -->
-            <div id="threat-chart" style="width: 100%; max-width: 600px; margin: 0 auto;"></div>
-            <script>
-                var graph = {{ graph_json | safe }};
-                Plotly.newPlot('threat-chart', graph.data, graph.layout);
-            </script>
-
-            <div class="grid">
-                <!-- URL Features -->
-                <div class="info-box">
-                    <h3><i class="fas fa-list-check"></i> Feature Extraction</h3>
-                    <div class="feature-list">
-                        {% for key, value in features.items() %}
-                        <div class="feature-item">
-                            <span>{{ key.replace('_', ' ').title() }}</span>
-                            <strong>{{ value }}</strong>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Security Analysis -->
-                <div class="info-box">
-                    <h3><i class="fas fa-lock"></i> SSL Certificate</h3>
-                    {% if ssl_info.status %}
-                        <div class="feature-item">
-                            <span>Status</span>
-                            <span class="{{ 'text-success' if 'Valid' in ssl_info.status else 'text-danger' }}">
-                                <strong>{{ ssl_info.status }}</strong>
-                            </span>
-                        </div>
-                        {% if ssl_info.issuer %}
-                        <div class="feature-item">
-                            <span>Issuer</span>
-                            <strong>{{ ssl_info.issuer }}</strong>
-                        </div>
-                        <div class="feature-item">
-                            <span>Expiry</span>
-                            <strong>{{ ssl_info.expiry }}</strong>
-                        </div>
-                        {% endif %}
-                    {% else %}
-                        <p>No SSL data available.</p>
-                    {% endif %}
-                </div>
-
-                <!-- Domain Info -->
-                <div class="info-box">
-                    <h3><i class="fas fa-globe"></i> Domain Analysis</h3>
-                    {% if whois_info.error %}
-                        <p class="text-muted">{{ whois_info.error }}</p>
-                    {% else %}
-                        <div class="feature-item">
-                            <span>Registrar</span>
-                            <strong>{{ whois_info.registrar }}</strong>
-                        </div>
-                        <div class="feature-item">
-                            <span>Created At</span>
-                            <strong>{{ whois_info.creation_date }}</strong>
-                        </div>
-                        <div class="feature-item">
-                            <span>Country</span>
-                            <strong>{{ whois_info.country }}</strong>
-                        </div>
-                    {% endif %}
-                </div>
+            <div class="stat-item">
+                <h4>Threats Blocked</h4>
+                <div class="value">1,284</div>
             </div>
         </div>
-        {% endif %}
 
-        <!-- Recent History Section -->
-        <section class="info-box" style="margin-top: 2rem;">
-            <h3><i class="fas fa-clock-rotate-left"></i> Recent Scans</h3>
-            <div class="feature-list">
-                {% for scan in history %}
-                <div class="feature-item">
-                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%;" title="{{ scan.url }}">
-                        {{ scan.url }}
-                    </span>
-                    <span class="badge bg-{{ scan.status_class }}" style="padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">
-                        {{ scan.result }}
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
+        <div class="dashboard-grid">
+            <!-- AI Phishing Detection -->
+            <a href="/phishing" class="tool-card">
+                <span class="badge">PRO</span>
+                <i class="fas fa-fish"></i>
+                <h3>AI Phishing Detector</h3>
+                <p>ML-based analysis of suspicious URLs and email patterns to prevent credential theft.</p>
+            </a>
 
-        {% if error %}
-        <div class="alert alert-danger" style="color: var(--danger); text-align: center; margin-bottom: 2rem;">
-            {{ error }}
+            <!-- Network Threat Detection -->
+            <a href="/threats" class="tool-card">
+                <span class="badge">ACTIVE</span>
+                <i class="fas fa-network-wired"></i>
+                <h3>Network Threat Detection</h3>
+                <p>Real-time packet monitoring and intrusion detection using Scapy and behavior analysis.</p>
+            </a>
+
+            <!-- Vulnerability Scanner -->
+            <a href="/vulnerability" class="tool-card">
+                <span class="badge">NEW</span>
+                <i class="fas fa-search-nodes"></i>
+                <h3>Vulnerability Scanner</h3>
+                <p>Comprehensive port scanning, OS detection, and CVE lookup for system hardening.</p>
+            </a>
+
+            <!-- SIEM Dashboard -->
+            <a href="/siem" class="tool-card">
+                <span class="badge">ENTERPRISE</span>
+                <i class="fas fa-chart-line"></i>
+                <h3>SIEM Log Monitor</h3>
+                <p>Centralized security information and event management with real-time log analytics.</p>
+            </a>
+
+            <!-- Ransomware Detection -->
+            <a href="/ransomware" class="tool-card">
+                <span class="badge">CRITICAL</span>
+                <i class="fas fa-file-shield"></i>
+                <h3>Ransomware Shield</h3>
+                <p>Heuristic monitoring of file encryption processes and suspicious process behaviors.</p>
+            </a>
+
+            <!-- Learning Center -->
+            <a href="/resources" class="tool-card" style="border-color: var(--secondary);">
+                <span class="badge" style="background: rgba(79, 172, 254, 0.1); color: var(--secondary);">RESOURCES</span>
+                <i class="fas fa-graduation-cap" style="color: var(--secondary);"></i>
+                <h3>Learning Center</h3>
+                <p>Master essential tools like Kali Linux, Wireshark, and Scapy for advanced security research.</p>
+            </a>
         </div>
-        {% endif %}
     </div>
 
     <footer>
-        &copy; 2024 AI Phishing Sentinel | Built for Cybersecurity Research
+        &copy; 2024 Cyber Sentinel AI | Integrated Cybersecurity Infrastructure
     </footer>
 
 </body>

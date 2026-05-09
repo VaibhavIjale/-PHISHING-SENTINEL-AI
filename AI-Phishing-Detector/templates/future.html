@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future of Cybersecurity | AI Phishing Sentinel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #00f2fe;
+            --secondary-accent: #4facfe;
+        }
+
+        .future-hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(79, 172, 254, 0.1));
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .future-hero h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--accent), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .trend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .trend-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trend-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2);
+        }
+
+        .trend-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .trend-card h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .trend-card p {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-btn:hover {
+            gap: 0.8rem;
+        }
+
+        .ai-section {
+            margin-top: 5rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .ai-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .ai-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .ai-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1><i class="fas fa-shield-halved"></i> CYBER SENTINEL AI</h1>
+    </nav>
+
+    <div class="container">
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+
+        <header class="future-hero">
+            <h2>The Future of Cybersecurity</h2>
+            <p>Exploring the next generation of digital defense, powered by Artificial Intelligence and Emerging Technologies.</p>
+        </header>
+
+        <div class="trend-grid">
+            <div class="trend-card">
+                <i class="fas fa-brain"></i>
+                <h3>AI & Machine Learning</h3>
+                <p>Autonomous security systems that learn from every attack, predicting and neutralizing threats before they reach the target.</p>
+            </div>
+            <div class="trend-card">
+                <i class="fas fa-key"></i>
+                <h3>Quantum Cryptography</h3>
+                <p>Preparing for the post-quantum era with encryption methods that remain secure even against the most powerful quantum computers.</p>
+            </div>
+            <div class="trend-card">
+                <i class="fas fa-user-shield"></i>
+                <h3>Zero Trust Architecture</h3>
+                <p>Moving beyond perimeter defense to a "never trust, always verify" model, protecting data regardless of location or user.</p>
+            </div>
+            <div class="trend-card">
+                <i class="fas fa-microchip"></i>
+                <h3>Edge Security</h3>
+                <p>Protecting the explosion of IoT devices by moving security processing closer to where data is generated.</p>
+            </div>
+        </div>
+
+        <section class="ai-section">
+            <div class="ai-content">
+                <h2>AI: The New Frontline</h2>
+                <p>As cyber threats become more sophisticated, AI is no longer optional. Modern attackers use AI to generate phishing emails and find vulnerabilities. Our <strong>Phishing Sentinel AI</strong> is part of the future, using deep learning to stay one step ahead.</p>
+                <ul style="color: #a0a0a0; margin-top: 1rem; line-height: 2;">
+                    <li><i class="fas fa-check-circle" style="color: var(--accent);"></i> Real-time URL behavioral analysis</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--accent);"></i> Predictive threat modeling</li>
+                    <li><i class="fas fa-check-circle" style="color: var(--accent);"></i> Adaptive learning from global threat data</li>
+                </ul>
+            </div>
+            <div class="ai-image">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" alt="Cybersecurity Future">
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        &copy; 2024 AI Phishing Sentinel | Shaping the Future of Web Security
+    </footer>
+
+</body>
+</html>

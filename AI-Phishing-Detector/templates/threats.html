@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Threat Detection | Cyber Sentinel AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .packet-log {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            height: 400px;
+            overflow-y: auto;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            border: 1px solid #333;
+        }
+        .packet-item {
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #111;
+            padding-bottom: 0.5rem;
+        }
+        .threat-alert {
+            color: #ff4444;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" style="text-decoration: none; color: inherit;"><h1><i class="fas fa-shield-halved"></i> CYBER SENTINEL AI</h1></a>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/logout" style="color: var(--danger);"><i class="fas fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="hero">
+            <h2>AI-Powered Threat Detection</h2>
+            <p>Real-time network traffic analysis and anomaly detection using machine learning.</p>
+        </header>
+
+        <div class="grid">
+            <div class="info-box">
+                <h3><i class="fas fa-satellite-dish"></i> Monitoring Status (LIVE)</h3>
+                <div class="feature-item">
+                    <span>Data Sent</span>
+                    <strong id="net-sent">0 MB</strong>
+                </div>
+                <div class="feature-item">
+                    <span>Data Received</span>
+                    <strong id="net-recv">0 MB</strong>
+                </div>
+                <div class="feature-item"><span>AI Model</span> <strong>RandomForest-IDS v2</strong></div>
+            </div>
+
+            <div class="info-box">
+                <h3><i class="fas fa-bolt"></i> Security Alerts (LIVE)</h3>
+                <div class="feature-list" id="alert-list">
+                    <div class="feature-item">
+                        <span>Waiting for live alerts...</span>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function updateAlerts() {
+                    fetch('/alerts/recent')
+                        .then(response => response.json())
+                        .then(data => {
+                            const list = document.getElementById('alert-list');
+                            list.innerHTML = '';
+                            data.forEach(alert => {
+                                const div = document.createElement('div');
+                                div.className = 'feature-item';
+                                div.innerHTML = `<span class="threat-alert" style="font-size:0.8rem;"><i class="fas fa-warning"></i> ${alert}</span>`;
+                                list.appendChild(div);
+                            });
+                        });
+                }
+                setInterval(updateAlerts, 5000);
+                updateAlerts();
+            </script>
+        </div>
+
+        <div class="packet-log" id="packet-log">
+            {% for p in packets %}
+            <div class="packet-item">
+                [<span style="color: #888;">{{ p.time }}</span>] 
+                <span style="color: #0ff;">{{ p.proto }}</span> 
+                {{ p.laddr }} -> {{ p.raddr }} 
+                [<span style="color: #ff0;">{{ p.status }}</span>]
+            </div>
+            {% endfor %}
+        </div>
+
+        <script>
+            function updateThreats() {
+                fetch('/threats/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update IO stats
+                        document.getElementById('net-sent').innerText = (data.net_io.bytes_sent / (1024 * 1024)).toFixed(2) + ' MB';
+                        document.getElementById('net-recv').innerText = (data.net_io.bytes_recv / (1024 * 1024)).toFixed(2) + ' MB';
+
+                        // Update Packet Log
+                        const log = document.getElementById('packet-log');
+                        log.innerHTML = '';
+                        data.packets.forEach(p => {
+                            const div = document.createElement('div');
+                            div.className = 'packet-item';
+                            div.innerHTML = `[<span style="color: #888;">${p.time}</span>] <span style="color: #0ff;">${p.proto}</span> ${p.laddr} -> ${p.raddr} [<span style="color: #ff0;">${p.status}</span>]`;
+                            log.appendChild(div);
+                        });
+                    });
+            }
+            setInterval(updateThreats, 3000);
+        </script>
+    </div>
+
+    <footer>
+        &copy; 2024 Cyber Sentinel AI | Real-time IDS/IPS
+    </footer>
+
+</body>
+</html>
