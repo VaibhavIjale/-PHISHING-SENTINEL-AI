@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Phishing Sentinel | URL Security Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1><i class="fas fa-shield-halved"></i> PHISHING SENTINEL AI</h1>
+    </nav>
+
+    <div class="container">
+        <header class="hero">
+            <h2>Secure Your Digital Browsing</h2>
+            <p>Our advanced AI model analyzes URLs in real-time to detect phishing threats and malicious activity.</p>
+        </header>
+
+        <section class="search-container">
+            <form action="/predict" method="POST" class="input-group">
+                <input type="text" name="url" placeholder="Paste URL here (e.g., https://google.com)" required value="{{ url if url else '' }}">
+                <button type="submit">ANALYZE URL</button>
+            </form>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="/history" style="color: var(--primary); text-decoration: none; font-weight: bold;"><i class="fas fa-history"></i> View Full Scan History</a>
+            </div>
+        </section>
+
+        {% if result %}
+        <div class="result-card {{ status_class }}">
+            <div class="result-header">
+                <div class="result-badge bg-{{ status_class }}">
+                    {{ result }}
+                </div>
+                <div class="confidence">
+                    AI Confidence: <strong>{{ confidence }}%</strong>
+                </div>
+            </div>
+
+            <!-- Threat Gauge Chart -->
+            <div id="threat-chart" style="width: 100%; max-width: 600px; margin: 0 auto;"></div>
+            <script>
+                var graph = {{ graph_json | safe }};
+                Plotly.newPlot('threat-chart', graph.data, graph.layout);
+            </script>
+
+            <div class="grid">
+                <!-- URL Features -->
+                <div class="info-box">
+                    <h3><i class="fas fa-list-check"></i> Feature Extraction</h3>
+                    <div class="feature-list">
+                        {% for key, value in features.items() %}
+                        <div class="feature-item">
+                            <span>{{ key.replace('_', ' ').title() }}</span>
+                            <strong>{{ value }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Security Analysis -->
+                <div class="info-box">
+                    <h3><i class="fas fa-lock"></i> SSL Certificate</h3>
+                    {% if ssl_info.status %}
+                        <div class="feature-item">
+                            <span>Status</span>
+                            <span class="{{ 'text-success' if 'Valid' in ssl_info.status else 'text-danger' }}">
+                                <strong>{{ ssl_info.status }}</strong>
+                            </span>
+                        </div>
+                        {% if ssl_info.issuer %}
+                        <div class="feature-item">
+                            <span>Issuer</span>
+                            <strong>{{ ssl_info.issuer }}</strong>
+                        </div>
+                        <div class="feature-item">
+                            <span>Expiry</span>
+                            <strong>{{ ssl_info.expiry }}</strong>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <p>No SSL data available.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Domain Info -->
+                <div class="info-box">
+                    <h3><i class="fas fa-globe"></i> Domain Analysis</h3>
+                    {% if whois_info.error %}
+                        <p class="text-muted">{{ whois_info.error }}</p>
+                    {% else %}
+                        <div class="feature-item">
+                            <span>Registrar</span>
+                            <strong>{{ whois_info.registrar }}</strong>
+                        </div>
+                        <div class="feature-item">
+                            <span>Created At</span>
+                            <strong>{{ whois_info.creation_date }}</strong>
+                        </div>
+                        <div class="feature-item">
+                            <span>Country</span>
+                            <strong>{{ whois_info.country }}</strong>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recent History Section -->
+        <section class="info-box" style="margin-top: 2rem;">
+            <h3><i class="fas fa-clock-rotate-left"></i> Recent Scans</h3>
+            <div class="feature-list">
+                {% for scan in history %}
+                <div class="feature-item">
+                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%;" title="{{ scan.url }}">
+                        {{ scan.url }}
+                    </span>
+                    <span class="badge bg-{{ scan.status_class }}" style="padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">
+                        {{ scan.result }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if error %}
+        <div class="alert alert-danger" style="color: var(--danger); text-align: center; margin-bottom: 2rem;">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        &copy; 2024 AI Phishing Sentinel | Built for Cybersecurity Research
+    </footer>
+
+</body>
+</html>

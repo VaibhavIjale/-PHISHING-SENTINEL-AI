@@ -1,0 +1,11 @@
+flask
+pandas
+scikit-learn
+numpy
+joblib
+requests
+python-whois
+tldextract
+flask-sqlalchemy
+plotly
+python-dotenv
