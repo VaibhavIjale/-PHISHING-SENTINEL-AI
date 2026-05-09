@@ -2,6 +2,14 @@
 
 An industry-level cybersecurity suite integrated with Artificial Intelligence for real-time network traffic analysis, phishing detection, and system health monitoring.
 
+---
+
+### 🚀 Quick Access (Local Deployment)
+*   **Dashboard URL**: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+*   **Authorized Secret ID**: `378139`
+
+---
+
 ## 🚀 Key Features
 
 *   **AI Phishing Detector**: Real-time URL analysis using Machine Learning (Random Forest) with feature extraction.
